@@ -1,6 +1,22 @@
 ﻿namespace Kaart
 {
-    public class Coordinaat
+    public interface ICoordinaat
+    {
+        int x { get; }
+        int y { get; }
+    }
+    public class Coordinaat<T> where T : ICoordinaat
+    {
+        public T x { get; set; }
+        public T y { get; set; }
+
+        public Coordinaat(T x, T y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+    }
+    public struct Coordinaat
     {
         public int x { get; set; }
         public int y { get; set; }
@@ -32,7 +48,8 @@
         {
             try
             {
-                return !Console.IsOutputRedirected && !Console.IsInputRedirected && !Console.IsErrorRedirected && Console.CursorLeft >= 0 && Console.CursorTop >= 0;
+                return !Console.IsOutputRedirected && !Console.IsInputRedirected && !Console.IsErrorRedirected
+                    && Console.CursorLeft >= 0 && Console.CursorTop >= 0;
             }
             catch
             {
@@ -60,27 +77,22 @@
         public Coordinaat van { get; set; }
         public Coordinaat naar { get; set; }
         private float? lengteBerekend;
+        
         public float Lengte()
         {
             if (!lengteBerekend.HasValue)
-                lengteBerekend = (float)Math.Sqrt((van.x - naar.x) * (van.x - naar.x) + (van.y - naar.y) * (van.y - naar.y));
+                lengteBerekend = (float)Math.Sqrt(Math.Pow(van.x - naar.x, 2) + Math.Pow(van.y - naar.y, 2));
             return lengteBerekend.Value;
         }
+
         public void TekenConsole(ConsoleTekener t)
         {
-            float deltaX = naar.x - van.x;
-            float deltaY = naar.y - van.y;
-            float length = Lengte();
-
-            for (int i = 0; i < (int)length; i++)
+            for (int i = 0; i < (int)Lengte(); i++)
             {
-                float factor = i / length;
-                int x = (int)Math.Round(van.x + deltaX * factor);
-                int y = (int)Math.Round(van.y + deltaY * factor);
-                t.SchrijfOp(new Coordinaat(x, y), "#");
+                float factor = i / Lengte();
+                t.SchrijfOp(new Coordinaat((int)Math.Round(van.x + (naar.x - van.x) * factor), (int)Math.Round(van.y + (naar.y - van.y) * factor)), "#");
             }
-
-            t.SchrijfOp(new Coordinaat((int)Math.Round(van.x + deltaX * .5), (int)Math.Round(van.y + deltaY * .5)), (1000 * length).metSuffixen());
+            t.SchrijfOp(new Coordinaat((int)Math.Round(van.x + (naar.x - van.x) * .5), (int)Math.Round(van.y + (naar.y - van.y) * .5)), (1000 * Lengte()).metSuffixen());
         }
     }
 
@@ -134,7 +146,10 @@
                 tekenbareObjecten[tekenbareCount++] = item;
             }
         }
-
+        /*
+         * Teken de kaart
+         * @param t De ConsoleTekener die gebruikt moet worden om de kaart te tekenen
+         */
         public void Teken(ConsoleTekener t)
         {
             foreach (Tekenbaar tekenbaar in tekenbareObjecten)
@@ -149,20 +164,27 @@
     {
         static void Main(string[] args)
         {
+            //Hier wordt de kaart getekend met behulp van de ConsoleTekener
             Kaart k = new Kaart(30, 30);
+            //Hier worden de paden en attracties toegevoegd
             Pad p1 = new Pad();
+            //Met de coordinaten van de paden en attracties
             p1.van = new Coordinaat(2, 5);
             p1.naar = new Coordinaat(12, 30);
+            //Het pad wordt toegevoegd aan de kaart
             k.VoegPadToe(p1);
+            //Een Tweede pad wordt toegevoegd aan de kaart
             Pad p2 = new Pad();
             p2.van = new Coordinaat(26, 4);
             p2.naar = new Coordinaat(10, 5);
             k.VoegPadToe(p2);
+            //Er worden 3 attracties toegevoegd aan de kaart
             k.VoegItemToe(new Attractie(k, new Coordinaat(15, 15)));
             k.VoegItemToe(new Attractie(k, new Coordinaat(20, 15)));
             k.VoegItemToe(new Attractie(k, new Coordinaat(5, 18)));
+            
+            //Hierna wordt een console tekener aangemaakt
             k.Teken(new ConsoleTekener());
-            //Console.WriteLine("Deze kaart is schaal 1:1000");
 
             //Hier wordt de schaal getekend met behulp van de ConsoleTekener
             new ConsoleTekener().SchrijfOp(new Coordinaat(0, k.Hoogte + 1), "Deze kaart is schaal 1:1000");
