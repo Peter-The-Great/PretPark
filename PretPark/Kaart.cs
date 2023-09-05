@@ -1,4 +1,4 @@
-﻿namespace PretPark;
+﻿namespace Kaart;
 
 public struct Coordinaat
 {
@@ -46,8 +46,13 @@ public class ConsoleTekener
     }
 }
 
-public static class ExtensionMethods
+public static class Float
 {
+    /**
+     * Maak een string met een suffix van een float
+     * @param number De float die omgezet moet worden naar een string
+     * @return De float als string met een suffix
+     */
     public static string metSuffixen(this float number)
     {
         if (number >= 1e9)
@@ -72,14 +77,21 @@ public class Pad : Tekenbaar
             lengteBerekend = (float)Math.Sqrt(Math.Pow(van.x - naar.x, 2) + Math.Pow(van.y - naar.y, 2));
         return lengteBerekend.Value;
     }
-
+    /**
+     * Teken het pad op de kaart
+     * @param t De tekener die gebruikt moet worden om het pad te tekenen
+     * De functie doet eerst een for loop 
+     */
     public void TekenConsole(ConsoleTekener t)
     {
         for (int i = 0; i < (int)Lengte(); i++)
         {
+            // Bereken de positie van het pad met de formule van een lijn
             float factor = i / Lengte();
+            //De berekening gaat zo: van.x + (naar.x - van.x) * factor = de x positie van het pad op de kaart/
             t.Teken(new Coordinaat((int)Math.Round(van.x + (naar.x - van.x) * factor), (int)Math.Round(van.y + (naar.y - van.y) * factor)), "#");
         }
+        // Teken de lengte van het pad in het midden door de lengte te delen door 2 en dan de x en y positie te berekenen
         t.Teken(new Coordinaat((int)Math.Round(van.x + (naar.x - van.x) * .5), (int)Math.Round(van.y + (naar.y - van.y) * .5)), (1000 * Lengte()).metSuffixen());
     }
 }
@@ -94,7 +106,10 @@ public class Attractie : Tekenbaar
         this.kaart = kaart;
         this.positie = positie;
     }
-
+    /**
+     * Teken de attractie op de kaart
+     * @param t De tekener die gebruikt moet worden om de attractie te tekenen
+     */
     public void TekenConsole(ConsoleTekener t)
     {
         t.Teken(positie, "A");
@@ -109,6 +124,11 @@ public class Kaart
     private Tekenbaar[] tekenbareObjecten;
     private int tekenbareCount;
 
+    /**
+     * Maak een nieuwe kaart aan
+     * @param breedte De breedte van de kaart
+     * @param hoogte De hoogte van de kaart
+     */
     public Kaart(int breedte, int hoogte)
     {
         Breedte = breedte;
@@ -117,6 +137,10 @@ public class Kaart
         tekenbareCount = 0;
     }
 
+    /**
+     * Voeg een pad toe aan de kaart
+     * @param pad Het pad dat toegevoegd moet worden aan de kaart
+     */
     public void VoegPadToe(Pad pad)
     {
         if (tekenbareCount < tekenbareObjecten.Length)

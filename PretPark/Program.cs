@@ -1,5 +1,6 @@
 ﻿namespace PretPark;
-
+using Kaart;
+using Authenticatie;
 class Program { 
     public static void Main(string[] args)
     {
@@ -17,6 +18,25 @@ class Program {
         k.VoegItemToe(new Attractie(k, new Coordinaat(5, 18)));
         k.Teken(new ConsoleTekener());
         new ConsoleTekener().Teken(new Coordinaat(0, k.Hoogte + 1), "Deze kaart is schaal 1:1000");
-        System.Console.Read();
+        //Console.Read();
+
+        //Hieronder voor de user authenticatie.
+        // Simpele test met dependency injection
+        var gebruikerContext = new GebruikerContext();
+        var emailService = new EmailService();
+        var gebruikerService = new GebruikerService(gebruikerContext, emailService);
+
+        Console.WriteLine("Registratie:");
+        gebruikerService.Registreer("voorbeeld@email.com", "wachtwoord123");
+
+        Console.WriteLine("\nLogin:");
+        bool isIngelogd = gebruikerService.Login("voorbeeld@email.com", "wachtwoord123");
+        Console.WriteLine("Ingelogd: " + isIngelogd);
+
+        Console.WriteLine("\nVerificatie:");
+        bool isGeverifieerd = gebruikerService.Verifieer(gebruikerContext.GetGebruiker(0).VerificatieToken.Token);
+        Console.WriteLine("Geverifieerd: " + isGeverifieerd);
+
+        Console.ReadLine();
     }
 }
