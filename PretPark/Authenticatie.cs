@@ -14,9 +14,9 @@ public class VerificatieToken
 
 public class Gebruiker
 {
-    public string Email { get; set; }
-    public string Wachtwoord { get; set; }
-    public VerificatieToken VerificatieToken { get; set; }
+    public string? Email { get; set; }
+    public string? Wachtwoord { get; set; }
+    public VerificatieToken? VerificatieToken { get; set; }
 
     public bool Geverifieerd()
     {
