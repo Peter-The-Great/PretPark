@@ -1,5 +1,6 @@
 ﻿namespace PretPark;
 using Kaart;
+//using Logger;
 using Authenticatie;
 class Program { 
     public static void Main(string[] args)

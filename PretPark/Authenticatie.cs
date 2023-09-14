@@ -26,19 +26,17 @@ public class Gebruiker
 
 public class EmailService
 {
-    /**
-     * Simulatie van het versturen van een verificatie-email.
-     * In een echte implementatie zou dit een asynchrone taak zijn.
-     */
+    // <summary>
+    // Een <c>StuurVerificatieEmail</c> functie om een verificatie-email te sturen.
+    // <summary>
     public void StuurVerificatieEmail(string email, Guid token)
     {
         Console.WriteLine($"Verificatie-email verstuurd naar: {email}, Token: {token}");
     }
 }
-/**
- * Simulatie van een database context.
- * * In een echte implementatie zou dit een database context zijn.
- * */
+// <summary>
+//  <c>IGebruikerContext</c> In een echte implementatie zou dit een database context zijn.
+// <summary>
 public interface IGebruikerContext
 {
     int AantalGebruikers();
@@ -46,6 +44,9 @@ public interface IGebruikerContext
     void NieuweGebruiker(Gebruiker gebruiker);
 }
 
+/// <summary>
+/// Simulatie van een database context.
+/// </summary>
 public class GebruikerContext : IGebruikerContext
 {
     private List<Gebruiker> gebruikers = new List<Gebruiker>();
@@ -57,7 +58,14 @@ public class GebruikerContext : IGebruikerContext
 
     public Gebruiker GetGebruiker(int index)
     {
-        return gebruikers[index];
+        if (index >= 0 && index < AantalGebruikers())
+        {
+            return gebruikers[index];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     public void NieuweGebruiker(Gebruiker gebruiker)
@@ -92,13 +100,16 @@ public class GebruikerService
 
     public bool Login(string email, string wachtwoord)
     {
+        //Hier halen we de gebruiker op uit de database
         var gebruiker = gebruikerContext.GetGebruiker(0); // Eenvoudige implementatie voor testdoeleinden
+        //Wat we hier doen is kijken of de gebruiker niet null is en of de email en wachtwoord gelijk zijn aan de meegegeven email en wachtwoord en of de gebruiker geverifieerd is
         return gebruiker != null && gebruiker.Email == email && gebruiker.Wachtwoord == wachtwoord && gebruiker.Geverifieerd();
     }
 
     public bool Verifieer(Guid token)
     {
         var gebruiker = gebruikerContext.GetGebruiker(0); // Eenvoudige implementatie voor testdoeleinden
+        //Als de gebruiker bestaat en de token is niet null en de token is gelijk aan de token die is meegegeven en de gebruiker is geverifieerd
         if (gebruiker != null && gebruiker.VerificatieToken != null && gebruiker.VerificatieToken.Token == token && gebruiker.Geverifieerd())
         {
             gebruiker.VerificatieToken = null;

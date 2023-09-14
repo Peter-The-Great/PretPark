@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PretPark", "PretPark\PretPark.csproj", "{5C3198DA-EB31-4756-8F16-2C79B2B52551}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PretPark", "PretPark\PretPark.csproj", "{5C3198DA-EB31-4756-8F16-2C79B2B52551}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PretPark-Test", "PretPark-Test\PretPark-Test.csproj", "{02E1FC5F-25F9-42D9-BADB-F98336E9BEB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{5C3198DA-EB31-4756-8F16-2C79B2B52551}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C3198DA-EB31-4756-8F16-2C79B2B52551}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C3198DA-EB31-4756-8F16-2C79B2B52551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02E1FC5F-25F9-42D9-BADB-F98336E9BEB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02E1FC5F-25F9-42D9-BADB-F98336E9BEB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02E1FC5F-25F9-42D9-BADB-F98336E9BEB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02E1FC5F-25F9-42D9-BADB-F98336E9BEB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
